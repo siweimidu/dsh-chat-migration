@@ -16,7 +16,7 @@
     "test": "node --test tests/ packages/*/tests/",
     "check:manifests": "node scripts/check-manifests.mjs",
     "compat:matrix": "node scripts/compat-matrix.mjs",
-    "pack:all": "pnpm -r exec pnpm pack --pack-destination ../../dist"
+    "pack:all": "pnpm --filter \"@xiaozhuang-dsh/conversation-import\" --filter \"@xiaozhuang-dsh/chat-preset\" exec pnpm pack --pack-destination \"$INIT_CWD/dist\""
   },
   "devDependencies": {
     "@types/node": "^22.14.0",

@@ -15,34 +15,44 @@
 
 后两个包为什么没移植、缺什么、怎么补：见 [未移植的两个插件](#未移植的两个插件)。
 
-## 安装
+## 安装（任何电脑，一条命令）
 
-### 从 npm
+装完重启 DSH 生效。`dsh plugin add` 会自动把包登记进该 profile 的 `dsh.profile.bundles`。
+
+**首选：公网 URL，不需要 npm 账号、不需要建 Release**
 
 ```bash
-dsh plugin --profile desktop add @xiaozhuang-dsh/conversation-import
-dsh plugin --profile desktop add @xiaozhuang-dsh/chat-preset
+dsh plugin --profile desktop add https://raw.githubusercontent.com/niushuanan/dsh-chat-migration/master/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/niushuanan/dsh-chat-migration/master/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
 ```
 
-`dsh plugin add` 会自动把它写进该 profile 的 `dsh.profile.bundles`，重启 DSH 后生效。
-
-### 从 GitHub Release 的 tarball（不发 npm 也能装）
+**正式版本：GitHub Release 资产**（打 tag 后 CI 自动产出，不依赖 npm）
 
 ```bash
 dsh plugin --profile desktop add https://github.com/niushuanan/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
 ```
 
-### 从本地仓库（开发/试用）
+**已发布到 npm 时**
+
+```bash
+dsh plugin --profile desktop add @xiaozhuang-dsh/conversation-import
+```
+
+**本地仓库（开发/试用）**
 
 ```bash
 dsh plugin --profile desktop add link:/absolute/path/to/dsh-chat-migration/packages/conversation-import
 ```
 
-### 卸载 / 回滚
+`desktop` profile 由 Electron 独占，命令行装不了；那种情况在 DSH 里用 **设置 → 插件 → 从本地目录安装**，或用别的 profile 名。
+
+**卸载**
 
 ```bash
 dsh plugin --profile desktop remove @xiaozhuang-dsh/conversation-import
 ```
+
+四种安装源各自验证到哪一步、以及发布者收尾命令，见 [docs/INSTALL-ANYWHERE.md](./docs/INSTALL-ANYWHERE.md)。
 
 ## 兼容性
 

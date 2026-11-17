@@ -1,5 +1,11 @@
 name: release
 
+# Two distribution paths, both usable by any machine that has DSH >= 0.1.7:
+#   1. GitHub Release assets  →  dsh plugin add <asset .tgz url>
+#   2. npm (optional)         →  dsh plugin add @xiaozhuang-dsh/<name>
+# The Release job never depends on npm credentials, so tagging alone always
+# produces installable artifacts.
+
 on:
   push:
     tags: ['v*']
@@ -24,8 +30,45 @@ jobs:
       - run: pnpm check:manifests
       - run: pnpm test
 
-  release:
+  pack:
     needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Pack installable packages
+        run: |
+          mkdir -p dist
+          pnpm --filter "@xiaozhuang-dsh/conversation-import" --filter "@xiaozhuang-dsh/chat-preset" exec pnpm pack --pack-destination "$PWD/dist"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tarballs
+          path: dist/*.tgz
+
+  release:
+    needs: pack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: tarballs
+          path: dist
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tgz
+          generate_release_notes: true
+
+  npm:
+    # Optional: skipped automatically when NPM_TOKEN is not configured.
+    needs: verify
+    if: ${{ secrets.NPM_TOKEN != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -38,20 +81,6 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
-
-      - name: Publish installable packages
-        # Private packages (fork-only contracts, see README) are skipped by pnpm.
-        run: pnpm --filter "@xiaozhuang-dsh/conversation-import" --filter "@xiaozhuang-dsh/chat-preset" publish --access public --no-git-checks
+      - run: pnpm --filter "@xiaozhuang-dsh/conversation-import" --filter "@xiaozhuang-dsh/chat-preset" publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Pack release tarballs
-        run: |
-          mkdir -p dist
-          pnpm --filter "@xiaozhuang-dsh/conversation-import" --filter "@xiaozhuang-dsh/chat-preset" exec pnpm pack --pack-destination "$PWD/dist"
-
-      - name: Attach tarballs to the GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*.tgz
-          generate_release_notes: true
