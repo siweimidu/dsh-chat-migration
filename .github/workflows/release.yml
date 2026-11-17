@@ -1,10 +1,12 @@
 name: release
 
-# Two distribution paths, both usable by any machine that has DSH >= 0.1.7:
-#   1. GitHub Release assets  →  dsh plugin add <asset .tgz url>
-#   2. npm (optional)         →  dsh plugin add @xiaozhuang-dsh/<name>
-# The Release job never depends on npm credentials, so tagging alone always
-# produces installable artifacts.
+# Produces installable artifacts for any machine that has DSH >= 0.1.7:
+#   GitHub Release assets  →  dsh plugin add <asset .tgz url>
+#   raw branch URLs        →  dsh plugin add <raw .tgz url>   (no CI needed)
+#
+# npm publishing is intentionally not automated here: it needs a token with the
+# `@xiaozhuang-dsh` scope, so run `pnpm publish -r --access public` locally when
+# that credential exists (see docs/INSTALL-ANYWHERE.md).
 
 on:
   push:
@@ -64,25 +66,3 @@ jobs:
         with:
           files: dist/*.tgz
           generate_release_notes: true
-
-  npm:
-    # Optional publish step. `secrets` is not allowed in a job-level `if`, so the
-    # token is exposed as job env and the step checks that instead.
-    needs: verify
-    runs-on: ubuntu-latest
-    env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
-      - run: pnpm install --frozen-lockfile
-      - name: Publish to npm (skipped without NPM_TOKEN)
-        if: ${{ env.NODE_AUTH_TOKEN != '' }}
-        run: pnpm --filter "@xiaozhuang-dsh/conversation-import" --filter "@xiaozhuang-dsh/chat-preset" publish --access public --no-git-checks
