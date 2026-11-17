@@ -1,5 +1,5 @@
 {
-  "name": "@xiaozhuang-dsh/chat-preset",
+  "name": "@siweimidu/chat-preset",
   "version": "0.3.0",
   "description": "Registers the removable plain-chat agent preset root for DeepSeek Harness.",
   "keywords": [

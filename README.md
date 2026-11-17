@@ -8,8 +8,8 @@
 
 | 包 | 状态 | 能力 |
 | --- | --- | --- |
-| `@xiaozhuang-dsh/conversation-import` | ✅ 可安装 | DeepSeek 对话历史导入（预览 + 选择 + 导入成本地会话）、DSH 会话导出下载、设置页「导入对话」 |
-| `@xiaozhuang-dsh/chat-preset` | ✅ 可安装 | 注册可移除的纯聊天 agent preset（`chat`） |
+| `@siweimidu/conversation-import` | ✅ 可安装 | DeepSeek 对话历史导入（预览 + 选择 + 导入成本地会话）、DSH 会话导出下载、设置页「导入对话」 |
+| `@siweimidu/chat-preset` | ✅ 可安装 | 注册可移除的纯聊天 agent preset（`chat`） |
 | `@xiaozhuang-dsh/composer-add-menu` | ⛔ 未移植 | 输入框加号菜单（命令/插件/技能/附件） |
 | `@xiaozhuang-dsh/ui-plain-chat` | ⛔ 未移植 | 侧栏「聊天」入口 + 纯聊天表现层 |
 
@@ -45,13 +45,13 @@ curl -fsSL https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@master/insta
 DSH → **设置 → 插件 → 安装插件**，把这一行粘进去：
 
 ```
-https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
 ```
 
 再粘一次（纯聊天预设，可选）：
 
 ```
-https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-chat-preset-0.3.0.tgz
+https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-chat-preset-0.3.0.tgz
 ```
 
 面板的安装框接受包名、本地路径、git 地址、tarball URL（宿主 `plugin-manager` 的 spec 定义）。
@@ -70,9 +70,9 @@ DSH 面板的安装走 Node 网络栈（不读系统代理），所以下面每�
 完整的一行示例：
 
 ```
-https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
-https://ghfast.top/https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
-https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
+https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/siweimidu-conversation-import-0.3.0.tgz
+https://ghfast.top/https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
+https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/siweimidu-chat-preset-0.3.0.tgz
 ```
 
 如果面板报「无法连接」，先点一次**重试**：首次访问是冷缓存（2–3s），面板的超时比这个更短时就会误报，重试通常即成功。
@@ -117,7 +117,7 @@ curl -fsSL https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master
 ### 卸载
 
 ```bash
-dsh plugin --profile <profile> remove @xiaozhuang-dsh/conversation-import
+dsh plugin --profile <profile> remove @siweimidu/conversation-import
 ```
 
 四种安装源各自验证到哪一步、以及发布者收尾命令，见 [docs/INSTALL-ANYWHERE.md](./docs/INSTALL-ANYWHERE.md)。

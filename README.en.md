@@ -8,16 +8,16 @@ DeepSeek conversation-history import and DSH session export, packaged as **stand
 
 | Package | Status | Capability |
 | --- | --- | --- |
-| `@xiaozhuang-dsh/conversation-import` | ✅ installable | Import DeepSeek conversation history (preview → select → import as local sessions), export DSH sessions as a downloadable archive, "Import conversations" settings section |
-| `@xiaozhuang-dsh/chat-preset` | ✅ installable | Registers the removable `chat` plain-chat agent preset |
+| `@siweimidu/conversation-import` | ✅ installable | Import DeepSeek conversation history (preview → select → import as local sessions), export DSH sessions as a downloadable archive, "Import conversations" settings section |
+| `@siweimidu/chat-preset` | ✅ installable | Registers the removable `chat` plain-chat agent preset |
 | `@xiaozhuang-dsh/composer-add-menu` | ⛔ not ported | Composer "+" menu (commands / plugins / skills / attachments) |
 | `@xiaozhuang-dsh/ui-plain-chat` | ⛔ not ported | Sidebar chat entry + plain-chat presentation layer |
 
 ## Install
 
 ```bash
-dsh plugin --profile desktop add @xiaozhuang-dsh/conversation-import
-dsh plugin --profile desktop add @xiaozhuang-dsh/chat-preset
+dsh plugin --profile desktop add @siweimidu/conversation-import
+dsh plugin --profile desktop add @siweimidu/chat-preset
 ```
 
 `dsh plugin add` registers the package in that profile's `dsh.profile.bundles` automatically; restart DSH to load it.
@@ -25,7 +25,7 @@ dsh plugin --profile desktop add @xiaozhuang-dsh/chat-preset
 Release tarball instead of npm:
 
 ```bash
-dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
 ```
 
 Local checkout:
@@ -37,7 +37,7 @@ dsh plugin --profile desktop add link:/absolute/path/to/dsh-chat-migration/packa
 Remove:
 
 ```bash
-dsh plugin --profile desktop remove @xiaozhuang-dsh/conversation-import
+dsh plugin --profile desktop remove @siweimidu/conversation-import
 ```
 
 ## Compatibility

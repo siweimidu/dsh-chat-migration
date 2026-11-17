@@ -17,7 +17,7 @@ $version = 'v0.3.0'
 $semver = $version.TrimStart('v')
 $repo = 'siweimidu/dsh-chat-migration'
 $packages = @('conversation-import', 'chat-preset')
-$scope = '@xiaozhuang-dsh'
+$scope = '@siweimidu'
 
 $dshHome = if ($env:DSH_HOME) { $env:DSH_HOME } else { Join-Path $env:USERPROFILE '.dsh' }
 $profilesRoot = Join-Path $dshHome 'profiles'
@@ -45,8 +45,11 @@ New-Item -ItemType Directory -Force $temp | Out-Null
 
 function Save-Package {
   param([string]$Name, [string]$OutFile)
-  $file = "xiaozhuang-dsh-$Name-$semver.tgz"
+  $file = "siweimidu-$Name-$semver.tgz"
+  $npmFile = "$Name-$semver.tgz"
   $sources = @(
+    "https://registry.npmmirror.com/$scope/$Name/-/$npmFile",
+    "https://registry.npmjs.org/$scope/$Name/-/$npmFile",
     "https://cdn.jsdelivr.net/gh/$repo@$version/dist/$file",
     "https://ghfast.top/https://github.com/$repo/releases/download/$version/$file",
     "https://github.com/$repo/releases/download/$version/$file",

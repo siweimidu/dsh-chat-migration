@@ -7,8 +7,8 @@
 只要本仓库推送过，任何电脑都能直接装：
 
 ```powershell
-dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
-dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/siweimidu-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/siweimidu-chat-preset-0.3.0.tgz
 ```
 
 **为什么这条能用（已实测）**：`dsh plugin add` 把参数透传给 pnpm；pnpm 对任意 URL 都按 gzip tarball 解包，**与服务器返回的 Content-Type 无关**。我用本地静态服务器把 `.tgz` 以 `text/plain; charset=utf-8` 返回（这正是 `raw.githubusercontent.com` 的行为）再安装，profile 里依赖、`dsh.profile.bundles`、`--dump-config` 的插件行全部正确。
@@ -18,14 +18,14 @@ dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh
 打 tag 后 CI 自动建 Release 并挂上 tarball（无 `NPM_TOKEN` 也照常产出）：
 
 ```powershell
-dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
 ```
 
 ## 备选：npm（需先发布）
 
 ```powershell
-dsh plugin --profile desktop add @xiaozhuang-dsh/conversation-import
-dsh plugin --profile desktop add @xiaozhuang-dsh/chat-preset
+dsh plugin --profile desktop add @siweimidu/conversation-import
+dsh plugin --profile desktop add @siweimidu/chat-preset
 ```
 
 前置：`@xiaozhuang-dsh` scope 归你（组织成员或改成你自己的 scope），且配了 `NPM_TOKEN`。注意 npm 已公告：绕过 2FA 的 token 将在 2026-08 起受限、直接发布在 2027-01 起受限，所以不要把 npm 当作唯一路径。
@@ -52,7 +52,7 @@ dsh --profile desktop --dump-config | Select-String conversation-import
 ## 卸载
 
 ```powershell
-dsh plugin --profile <profile> remove @xiaozhuang-dsh/conversation-import
+dsh plugin --profile <profile> remove @siweimidu/conversation-import
 ```
 
 ## 已验证 / 未验证

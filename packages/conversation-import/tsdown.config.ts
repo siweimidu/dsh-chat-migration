@@ -1,7 +1,7 @@
 import { clientBundle } from '../../packages/client/tsdown.client.ts'
 
 export default clientBundle(
-  '@xiaozhuang-dsh/conversation-import',
+  '@siweimidu/conversation-import',
   ['src/index.ts'],
   { hostPhase: true },
 )

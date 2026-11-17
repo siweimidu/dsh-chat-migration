@@ -53,7 +53,7 @@ test('the shipped bundles contain no fork-only slot ids', async () => {
 test('the client bundle keeps the host module-loader contract', async () => {
   const bundle = await read('lib/client.js')
   assert.match(bundle, /window\.__ModuleLoader__\.load\(/)
-  assert.match(bundle, /id: "@xiaozhuang-dsh\/conversation-import"/)
+  assert.match(bundle, /id: "@siweimidu\/conversation-import"/)
   assert.match(bundle, /exports\.apply = apply/)
 })
 

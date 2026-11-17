@@ -18,7 +18,7 @@ const distDir = join(root, 'dist')
 const SHIPPED = ['conversation-import', 'chat-preset']
 
 function tarballFor(name) {
-  const prefix = `xiaozhuang-dsh-${name}-`
+  const prefix = `siweimidu-${name}-`
   if (!existsSync(distDir)) return undefined
   const match = readdirSync(distDir)
     .find(file => file.startsWith(prefix) && file.endsWith('.tgz'))

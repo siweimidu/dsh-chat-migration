@@ -3,7 +3,7 @@
 
   Desktop app (the common case) - no profile name, one line:
       DSH -> Settings -> Plugins -> Install plugin, paste:
-      https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+      https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
 
   Command line - profile name is a required host option, but this one-liner figures it out:
 
@@ -26,7 +26,7 @@ $packages = @('conversation-import', 'chat-preset')
 function Save-Plugin {
   param([string]$Name, [string]$Destination)
 
-  $file = "xiaozhuang-dsh-$Name-$semver.tgz"
+  $file = "siweimidu-$Name-$semver.tgz"
   $sources = @(
     "https://github.com/$repo/releases/download/$Version/$file",
     "https://cdn.jsdelivr.net/gh/$repo@$Version/dist/$file",
@@ -63,7 +63,7 @@ Write-Host ''
 Write-Host 'Unpacked. Two ways to install from the DSH plugin panel (Settings -> Plugins):'
 Write-Host ''
 Write-Host '  1) paste the tarball path (the panel treats it as a .tgz / 压缩包):'
-foreach ($name in $packages) { Write-Host "     $(Join-Path $root "xiaozhuang-dsh-$name-$semver.tgz")" }
+foreach ($name in $packages) { Write-Host "     $(Join-Path $root "siweimidu-$name-$semver.tgz")" }
 Write-Host ''
 Write-Host '  2) or install from a local folder:'
 foreach ($name in $packages) { Write-Host "     $(Join-Path (Join-Path $root $name) 'package')" }

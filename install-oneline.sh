@@ -13,7 +13,7 @@ set -eu
 VERSION="${DSH_PLUGIN_VERSION:-v0.3.0}"
 SEMVER="${VERSION#v}"
 REPO="siweimidu/dsh-chat-migration"
-SCOPE="@xiaozhuang-dsh"
+SCOPE="@siweimidu"
 DSH_HOME="${DSH_HOME:-$HOME/.dsh}"
 PROFILES="$DSH_HOME/profiles"
 
@@ -40,8 +40,10 @@ trap 'rm -rf "$TMP"' EXIT
 
 fetch() {
   name="$1"
-  file="xiaozhuang-dsh-$name-$SEMVER.tgz"
+  file="siweimidu-$name-$SEMVER.tgz"
   for url in \
+    "https://registry.npmmirror.com/$SCOPE/$name/-/$name-$SEMVER.tgz" \
+    "https://registry.npmjs.org/$SCOPE/$name/-/$name-$SEMVER.tgz" \
     "https://cdn.jsdelivr.net/gh/$REPO@$VERSION/dist/$file" \
     "https://ghfast.top/https://github.com/$REPO/releases/download/$VERSION/$file" \
     "https://github.com/$REPO/releases/download/$VERSION/$file" \
@@ -63,7 +65,7 @@ INSTALLED=""
 for name in conversation-import chat-preset; do
   echo "fetching $name"
   fetch "$name"
-  file="xiaozhuang-dsh-$name-$SEMVER.tgz"
+  file="siweimidu-$name-$SEMVER.tgz"
   mkdir -p "$TMP/$name"
   tar -xzf "$TMP/$file" -C "$TMP/$name"
   [ -f "$TMP/$name/package/package.json" ] || { echo "$name has no package.json" >&2; exit 1; }

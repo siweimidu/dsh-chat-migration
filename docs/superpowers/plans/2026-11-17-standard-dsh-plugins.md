@@ -88,13 +88,13 @@
 **Files:**
 - Create: `packages/conversation-import/**`（由 `legacy/payload/conversation-import/product/plugins/conversation-import` 移入）
 - Modify: `src/client/index.ts:135-137`（删除 `settings.section.icon` 注册）
-- Modify: `package.json`（name=`@xiaozhuang-dsh/conversation-import`、version `0.3.0`、peerDeps semver、`files`、`keywords`、`engines.dsh: ">=0.1.7"`）
+- Modify: `package.json`（name=`@siweimidu/conversation-import`、version `0.3.0`、peerDeps semver、`files`、`keywords`、`engines.dsh: ">=0.1.7"`）
 - Modify: `src/index.ts`（`dsh-session-log-export` 改可选加载，缺失时降级）
 - Test: `packages/conversation-import/tests/manifest.test.mjs`
 
 **Interfaces:**
 - Consumes: `checkManifest`（Task 2）
-- Produces: 可安装包 `@xiaozhuang-dsh/conversation-import@0.3.0`；`cordis.patch.yml` 仍声明 `session-log-download`（disabled）+ `conversation-import` 行。
+- Produces: 可安装包 `@siweimidu/conversation-import@0.3.0`；`cordis.patch.yml` 仍声明 `session-log-download`（disabled）+ `conversation-import` 行。
 
 - [ ] **Step 1: 写失败测试** 断言该包 `checkManifest` 返回 `[]`，且 `package.json.dsh.client.platform === 'web'`。
 - [ ] **Step 2: 运行**，预期 FAIL（workspace 依赖未清）。
@@ -106,8 +106,8 @@
 
 **Files:** Modify: `packages/conversation-import/tsdown.config.ts`（去掉 monorepo 相对 import）
 
-- [ ] **Step 1:** `pnpm install` 后 `pnpm --filter @xiaozhuang-dsh/conversation-import build`，预期在包内生成 `lib/index.js` + `lib/client.js`。
-- [ ] **Step 2:** `pnpm --filter @xiaozhuang-dsh/conversation-import typecheck`（tsc 对 0.2.1-rc.2 的 published 类型），预期 0 error。
+- [ ] **Step 1:** `pnpm install` 后 `pnpm --filter @siweimidu/conversation-import build`，预期在包内生成 `lib/index.js` + `lib/client.js`。
+- [ ] **Step 2:** `pnpm --filter @siweimidu/conversation-import typecheck`（tsc 对 0.2.1-rc.2 的 published 类型），预期 0 error。
 - [ ] **Step 3:** 用 `checkManifest` 复验 `lib/*` 存在。
 - [ ] **Step 4: Commit** `build(conversation-import): standalone tsdown build`。
 

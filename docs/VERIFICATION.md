@@ -30,22 +30,22 @@ $ node --test "tests/**/*.test.mjs" "packages/**/tests/**/*.test.mjs"
 ```
 $ dsh plugin --profile plugintest add link:<repo>/packages/conversation-import
 dsh: initialized profile plugintest at C:\Users\35238\.dsh\profiles\plugintest
-+ @xiaozhuang-dsh/conversation-import link:...
++ @siweimidu/conversation-import link:...
 Done in 687ms
 ```
 
 `dsh plugin add` **自动**把包写进 `dsh.profile.bundles`：
 
 ```json
-{ "dsh": { "profile": { "bundles": ["@deepseek-ai/dsh-base", "@xiaozhuang-dsh/conversation-import"] } } }
+{ "dsh": { "profile": { "bundles": ["@deepseek-ai/dsh-base", "@siweimidu/conversation-import"] } } }
 ```
 
 组合后的宿主配置里出现了插件行（`dsh --profile plugintest --dump-config`）：
 
 ```
-# == @xiaozhuang-dsh/conversation-import
+# == @siweimidu/conversation-import
 - id: conversation-import
-  name: file:///.../profiles/plugintest/node_modules/@xiaozhuang-dsh/conversation-import/lib/index.js
+  name: file:///.../profiles/plugintest/node_modules/@siweimidu/conversation-import/lib/index.js
   disabled: false
 ```
 
@@ -64,18 +64,18 @@ apply is function
 ## 5. 从 tarball 安装（Release 产物路径）
 
 ```
-$ pnpm pack --pack-destination dist      # 生成 xiaozhuang-dsh-conversation-import-0.3.0.tgz
-$ tar -xzf dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz -C $TEMP/tarcheck
+$ pnpm pack --pack-destination dist      # 生成 siweimidu-conversation-import-0.3.0.tgz
+$ tar -xzf dist/siweimidu-conversation-import-0.3.0.tgz -C $TEMP/tarcheck
 cordis.patch.yml  lib/client.js  lib/index.js  LICENSE  package.json  README*
 # manifest 内 workspace: 命中数 = 0
 
-$ dsh plugin --profile plugintar add <repo>/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
-+ @xiaozhuang-dsh/conversation-import file:...tgz
+$ dsh plugin --profile plugintar add <repo>/dist/siweimidu-conversation-import-0.3.0.tgz
++ @siweimidu/conversation-import file:...tgz
 Done in 840ms
 
 $ dsh --profile plugintar --dump-config | grep conversation-import
 - id: conversation-import
-  name: file:///.../plugintar/node_modules/@xiaozhuang-dsh/conversation-import/lib/index.js
+  name: file:///.../plugintar/node_modules/@siweimidu/conversation-import/lib/index.js
   disabled: false
 ```
 

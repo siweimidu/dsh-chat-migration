@@ -48,7 +48,7 @@ jobs:
       - name: Pack installable packages
         run: |
           mkdir -p dist
-          pnpm --filter "@xiaozhuang-dsh/conversation-import" --filter "@xiaozhuang-dsh/chat-preset" exec pnpm pack --pack-destination "$PWD/dist"
+          pnpm --filter "@siweimidu/conversation-import" --filter "@siweimidu/chat-preset" exec pnpm pack --pack-destination "$PWD/dist"
       - uses: actions/upload-artifact@v4
         with:
           name: tarballs
