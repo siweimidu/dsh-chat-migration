@@ -114,6 +114,22 @@ foreach ($id in $installed) {
 }
 $manifest.dsh.profile.bundles = $bundles
 
+# The plugin panel lists what the profile declares as dependencies, so register it
+# there too - bundles alone make the host load the plugin but stay invisible in the UI.
+if (-not $manifest.PSObject.Properties['dependencies']) {
+  $manifest | Add-Member -NotePropertyName dependencies -NotePropertyValue ([pscustomobject]@{}) -Force
+}
+foreach ($id in $installed) {
+  $short = $id.Split('/')[1]
+  $entry = $manifest.dependencies.PSObject.Properties[$id]
+  if ($entry) {
+    $entry.Value = $semver
+  } else {
+    $manifest.dependencies | Add-Member -NotePropertyName $id -NotePropertyValue $semver -Force
+  }
+  Write-Host "  dependency $id = $semver ($short)"
+}
+
 $json = $manifest | ConvertTo-Json -Depth 20
 [System.IO.File]::WriteAllText($manifestPath, $json, (New-Object System.Text.UTF8Encoding($false)))
 

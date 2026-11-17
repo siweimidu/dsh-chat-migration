@@ -86,17 +86,23 @@ fi
 
 cat > "$TMP/register.mjs" <<'EOF'
 import { readFileSync, writeFileSync } from 'node:fs'
-const [path, ...ids] = process.argv.slice(2)
+const [path, version, ...ids] = process.argv.slice(2)
 const manifest = JSON.parse(readFileSync(path, 'utf8'))
 manifest.dsh ??= {}
 manifest.dsh.profile ??= {}
 const bundles = Array.isArray(manifest.dsh.profile.bundles) ? manifest.dsh.profile.bundles : []
-for (const id of ids) if (!bundles.includes(id)) bundles.push(id)
+// The plugin panel lists dependencies, so register both or the plugin stays invisible.
+const dependencies = manifest.dependencies ?? {}
+for (const id of ids) {
+  if (!bundles.includes(id)) bundles.push(id)
+  dependencies[id] = version
+}
 manifest.dsh.profile.bundles = bundles
+manifest.dependencies = dependencies
 writeFileSync(path, `${JSON.stringify(manifest, null, 2)}\n`)
 EOF
 
-node "$TMP/register.mjs" "$MANIFEST" $INSTALLED
+node "$TMP/register.mjs" "$MANIFEST" "$SEMVER" $INSTALLED
 
 echo
 echo "installed into profile '$TARGET':"
