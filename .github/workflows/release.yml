@@ -66,10 +66,12 @@ jobs:
           generate_release_notes: true
 
   npm:
-    # Optional: skipped automatically when NPM_TOKEN is not configured.
+    # Optional publish step. `secrets` is not allowed in a job-level `if`, so the
+    # token is exposed as job env and the step checks that instead.
     needs: verify
-    if: ${{ secrets.NPM_TOKEN != '' }}
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -81,6 +83,6 @@ jobs:
           cache: pnpm
           registry-url: https://registry.npmjs.org
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter "@xiaozhuang-dsh/conversation-import" --filter "@xiaozhuang-dsh/chat-preset" publish --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to npm (skipped without NPM_TOKEN)
+        if: ${{ env.NODE_AUTH_TOKEN != '' }}
+        run: pnpm --filter "@xiaozhuang-dsh/conversation-import" --filter "@xiaozhuang-dsh/chat-preset" publish --access public --no-git-checks
