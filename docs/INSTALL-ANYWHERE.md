@@ -7,8 +7,8 @@
 只要本仓库推送过，任何电脑都能直接装：
 
 ```powershell
-dsh plugin --profile desktop add https://raw.githubusercontent.com/niushuanan/dsh-chat-migration/master/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
-dsh plugin --profile desktop add https://raw.githubusercontent.com/niushuanan/dsh-chat-migration/master/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
 ```
 
 **为什么这条能用（已实测）**：`dsh plugin add` 把参数透传给 pnpm；pnpm 对任意 URL 都按 gzip tarball 解包，**与服务器返回的 Content-Type 无关**。我用本地静态服务器把 `.tgz` 以 `text/plain; charset=utf-8` 返回（这正是 `raw.githubusercontent.com` 的行为）再安装，profile 里依赖、`dsh.profile.bundles`、`--dump-config` 的插件行全部正确。
@@ -18,7 +18,7 @@ dsh plugin --profile desktop add https://raw.githubusercontent.com/niushuanan/ds
 打 tag 后 CI 自动建 Release 并挂上 tarball（无 `NPM_TOKEN` 也照常产出）：
 
 ```powershell
-dsh plugin --profile desktop add https://github.com/niushuanan/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
 ```
 
 ## 备选：npm（需先发布）
@@ -63,16 +63,20 @@ dsh plugin --profile <profile> remove @xiaozhuang-dsh/conversation-import
 | `<本地 .tgz 绝对路径>` | ✅ 实测 |
 | `http://…/*.tgz`（`application/octet-stream`） | ✅ 实测 |
 | `http://…/*.tgz`（`text/plain`，模拟 raw） | ✅ 实测 |
-| `https://raw.githubusercontent.com/…` | ⚠️ 同一 pnpm 代码路径 + Content-Type 无关性已实测；公网可达性需 push 后由你确认 |
-| GitHub Release 资产 | ⚠️ 同上，URL 形态由 GitHub 提供 |
-| npm 包名 | ⛔ 未发布 |
+| **`https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/*.tgz`** | ✅ **公网实测**：HTTP 200 / 29199 字节；装进空 profile 后 `dsh.profile.bundles` 自动登记、`--dump-config` 出现 `id: conversation-import` 与 `id: chat-preset`、host 半 `import` 成功（`apply` 是函数，`inject: ["commands"]`）|
+| GitHub Release 资产 | ⚠️ 未产出：推 tag 被当前 token 权限拒绝（403）。raw URL 已可用，Release 不是必需 |
+| npm 包名 | ⛔ 未发布（`@xiaozhuang-dsh` scope 归属需你确认）|
 
-## 发布者一次性收尾
+## 发布者收尾
+
+已完成：`siweimidu/dsh-chat-migration` 的 `master` 已推送，`dist/` 两个 tarball 随仓库发布，上面那条 raw URL 即刻可用（已公网实测）。
+
+后续每次改代码：
 
 ```powershell
 cd dsh-chat-migration
-git push origin master
-git tag v0.3.0 && git push origin v0.3.0
+pnpm pack:all                 # 重打 dist/；忘打包会被 tests/dist.test.mjs 抓住
+git add -A && git commit -m "..." && git push mine master
 ```
 
-push 完 `master` 分支上的 raw URL 立刻可用；tag 会触发 CI 产出 Release 资产。之后每改一次代码，重新执行 `pnpm pack:all` 并把 `dist/*.tgz` 一起提交，raw URL 才不会滞后于源码。
+要 Release 资产时（当前 token 无 tag 推送权限）：网页 → Releases → Draft a new release → 选或新建 `v0.3.0` → 上传 `dist/*.tgz`。

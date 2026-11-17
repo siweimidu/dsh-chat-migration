@@ -15,10 +15,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/niushuanan/dsh-chat-migration.git",
+    "url": "git+https://github.com/siweimidu/dsh-chat-migration.git",
     "directory": "packages/ui-plain-chat"
   },
-  "homepage": "https://github.com/niushuanan/dsh-chat-migration#readme",
+  "homepage": "https://github.com/siweimidu/dsh-chat-migration#readme",
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/types/index.d.ts",

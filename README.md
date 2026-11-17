@@ -22,14 +22,14 @@
 **首选：公网 URL，不需要 npm 账号、不需要建 Release**
 
 ```bash
-dsh plugin --profile desktop add https://raw.githubusercontent.com/niushuanan/dsh-chat-migration/master/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
-dsh plugin --profile desktop add https://raw.githubusercontent.com/niushuanan/dsh-chat-migration/master/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
 ```
 
 **正式版本：GitHub Release 资产**（打 tag 后 CI 自动产出，不依赖 npm）
 
 ```bash
-dsh plugin --profile desktop add https://github.com/niushuanan/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
 ```
 
 **已发布到 npm 时**

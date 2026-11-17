@@ -25,7 +25,7 @@ dsh plugin --profile desktop add @xiaozhuang-dsh/chat-preset
 Release tarball instead of npm:
 
 ```bash
-dsh plugin --profile desktop add https://github.com/niushuanan/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
 ```
 
 Local checkout:
