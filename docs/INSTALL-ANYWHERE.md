@@ -64,19 +64,25 @@ dsh plugin --profile <profile> remove @xiaozhuang-dsh/conversation-import
 | `http://…/*.tgz`（`application/octet-stream`） | ✅ 实测 |
 | `http://…/*.tgz`（`text/plain`，模拟 raw） | ✅ 实测 |
 | **`https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/*.tgz`** | ✅ **公网实测**：HTTP 200 / 29199 字节；装进空 profile 后 `dsh.profile.bundles` 自动登记、`--dump-config` 出现 `id: conversation-import` 与 `id: chat-preset`、host 半 `import` 成功（`apply` 是函数，`inject: ["commands"]`）|
-| GitHub Release 资产 | ⚠️ 未产出：推 tag 被当前 token 权限拒绝（403）。raw URL 已可用，Release 不是必需 |
-| npm 包名 | ⛔ 未发布（`@xiaozhuang-dsh` scope 归属需你确认）|
+| GitHub Release 资产 | ✅ **已产出并实测**：`v0.3.0` 两个资产（chat-preset 2489B / conversation-import 29275B），下载 sha256 `2af6c92e…` 与 GitHub 记录一致；从 Release URL 装进空 profile 成功 |
+| npm 包名 | ⛔ 未发布：`@xiaozhuang-dsh` scope 不归当前账号（`npm publish` → 404）。CI 已不自动发布，需要时本地手动跑 |
 
-## 发布者收尾
+## 发布者收尾 → 已完成
 
-已完成：`siweimidu/dsh-chat-migration` 的 `master` 已推送，`dist/` 两个 tarball 随仓库发布，上面那条 raw URL 即刻可用（已公网实测）。
+已完成并验证：
+
+- 仓库 `siweimidu/dsh-chat-migration`（public），`master` 已推送，CI 全绿；
+- `v0.3.0` tag 指向最新提交，CI 自动产出 Release 与两个 tarball 资产；
+- raw URL 与 Release 资产都实测下载/安装成功。
 
 后续每次改代码：
 
 ```powershell
 cd dsh-chat-migration
-pnpm pack:all                 # 重打 dist/；忘打包会被 tests/dist.test.mjs 抓住
-git add -A && git commit -m "..." && git push mine master
+pnpm pack:all                      # 重打 dist/；忘打包会被 tests/dist.test.mjs 抓住
+git add -A && git commit -m "..."
+git push mine master               # raw URL 立刻跟上
+git tag -f v0.3.0 && git push -f mine v0.3.0   # 需要新 Release 资产时才打 tag
 ```
 
-要 Release 资产时（当前 token 无 tag 推送权限）：网页 → Releases → Draft a new release → 选或新建 `v0.3.0` → 上传 `dist/*.tgz`。
+CI 只产出 Release 资产（`.github/workflows/release.yml`）。npm 发布不自动化：需要 `@xiaozhuang-dsh` scope 的凭据，届时本地执行 `pnpm --filter "@xiaozhuang-dsh/*" publish --access public`，或把包名改成你账号名下的 scope。
