@@ -13,7 +13,7 @@
     "build": "pnpm -r --filter \"./packages/conversation-import\" --filter \"./packages/chat-preset\" run build",
     "typecheck": "pnpm --filter \"@xiaozhuang-dsh/conversation-import\" --filter \"@xiaozhuang-dsh/chat-preset\" run typecheck",
     "typecheck:all": "pnpm -r run typecheck",
-    "test": "node --test tests/ packages/*/tests/",
+    "test": "node --test tests/*.test.mjs packages/*/tests/*.test.mjs",
     "check:manifests": "node scripts/check-manifests.mjs",
     "compat:matrix": "node scripts/compat-matrix.mjs",
     "pack:all": "pnpm --filter \"@xiaozhuang-dsh/conversation-import\" --filter \"@xiaozhuang-dsh/chat-preset\" exec pnpm pack --pack-destination \"$INIT_CWD/dist\""
