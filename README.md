@@ -15,41 +15,67 @@
 
 后两个包为什么没移植、缺什么、怎么补：见 [未移植的两个插件](#未移植的两个插件)。
 
-## 安装（任何电脑，一条命令）
+## 安装（任何电脑，一条 URL）
 
-装完重启 DSH 生效。`dsh plugin add` 会自动把包登记进该 profile 的 `dsh.profile.bundles`。
+**不需要 GitHub 账号**：下面是公开下载地址，任何人可装。装完重启 DSH 生效。
 
-**首选：公网 URL，不需要 npm 账号、不需要建 Release**
+### 桌面版：一条 URL，粘进插件面板（不用填任何名字）
 
-```bash
-dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
-dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
+DSH → **设置 → 插件 → 安装插件**，把这一行粘进去：
+
+```
+https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
 ```
 
-**正式版本：GitHub Release 资产**（打 tag 后 CI 自动产出，不依赖 npm）
+再粘一次（纯聊天预设，可选）：
 
-```bash
-dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+```
+https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-chat-preset-0.3.0.tgz
 ```
 
-**已发布到 npm 时**
+面板的安装框接受包名、本地路径、git 地址、tarball URL（宿主 `plugin-manager` 的 spec 定义）。
 
-```bash
-dsh plugin --profile desktop add @xiaozhuang-dsh/conversation-import
+### 网络到 GitHub 不顺时：用同一份文件的 CDN 地址
+
+```
+https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
 ```
 
-**本地仓库（开发/试用）**
+jsDelivr 实测可直连（本机无代理环境 200 / 29201 字节，解包内容校验通过）。
 
-```bash
-dsh plugin --profile desktop add link:/absolute/path/to/dsh-chat-migration/packages/conversation-import
+### 命令行一行（自动判断 profile，不用你填名字）
+
+宿主把 `--profile` 定为必填项，且 `desktop` 被 Electron 独占，所以命令行是这样一行（自动挑第一个非 desktop 的 profile）：
+
+```powershell
+$p=(Get-ChildItem "$env:USERPROFILE\.dsh\profiles" -Directory | ?{ $_.Name -notin 'desktop','node_modules' } | Select -First 1).Name; 'conversation-import','chat-preset' | %{ dsh plugin --profile $p add "https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-$_-0.3.0.tgz" }
 ```
 
-`desktop` profile 由 Electron 独占，命令行装不了；那种情况在 DSH 里用 **设置 → 插件 → 从本地目录安装**，或用别的 profile 名。
+macOS / Linux：
 
-**卸载**
+```sh
+p=$(ls ~/.dsh/profiles | grep -vx -e desktop -e node_modules | head -1)
+for k in conversation-import chat-preset; do dsh plugin --profile "$p" add "https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-$k-0.3.0.tgz"; done
+```
+
+### 想先下载再手动选目录
+
+```powershell
+# Windows
+powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
+```
+```sh
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/install.sh | sh
+```
+
+两个脚本都会自动在 GitHub / jsDelivr / raw 之间挑一个可用的源，解包后打印可直接粘进「从本地目录安装」的绝对路径。
+
+### 卸载
 
 ```bash
-dsh plugin --profile desktop remove @xiaozhuang-dsh/conversation-import
+dsh plugin --profile <profile> remove @xiaozhuang-dsh/conversation-import
 ```
 
 四种安装源各自验证到哪一步、以及发布者收尾命令，见 [docs/INSTALL-ANYWHERE.md](./docs/INSTALL-ANYWHERE.md)。
