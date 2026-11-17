@@ -48,16 +48,16 @@ function Save-Package {
   $file = "siweimidu-$Name-$semver.tgz"
   $npmFile = "$Name-$semver.tgz"
   $sources = @(
-    "https://registry.npmmirror.com/$scope/$Name/-/$npmFile",
     "https://registry.npmjs.org/$scope/$Name/-/$npmFile",
     "https://cdn.jsdelivr.net/gh/$repo@$version/dist/$file",
+    "https://cdn.jsdelivr.net/gh/$repo@master/dist/$file",
     "https://ghfast.top/https://github.com/$repo/releases/download/$version/$file",
     "https://github.com/$repo/releases/download/$version/$file",
     "https://raw.githubusercontent.com/$repo/$version/dist/$file"
   )
   foreach ($url in $sources) {
     try {
-      Invoke-WebRequest -Uri $url -OutFile $OutFile -UseBasicParsing -TimeoutSec 60
+      Invoke-WebRequest -Uri $url -OutFile $OutFile -UseBasicParsing -TimeoutSec 90
       if ((Get-Item $OutFile).Length -gt 1000) {
         Write-Host "  ok   $($url.Split('/')[2])"
         return

@@ -15,7 +15,21 @@
 
 后两个包为什么没移植、缺什么、怎么补：见 [未移植的两个插件](#未移植的两个插件)。
 
-## 一行命令安装（任何电脑）
+## 最省事：面板填包名（已发布到 npm）
+
+DSH → **设置 → 插件 → 安装插件**，填包名（不用 URL、不用路径）：
+
+```
+@siweimidu/conversation-import
+```
+
+```
+@siweimidu/chat-preset
+```
+
+已实测：`registry.npmjs.org` 的 tarball 国内直连 200 / 1.3s；`npm view` 返回 `0.3.0`；用包名装进空 profile 返回 `Done`，配置层出现插件行。面板走 npm 源，不需要访问 GitHub/jsDelivr。
+
+## 一行命令安装（面板连不上的机器用这个）
 
 **Windows**（PowerShell）
 
