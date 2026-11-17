@@ -35,14 +35,26 @@ https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhu
 
 面板的安装框接受包名、本地路径、git 地址、tarball URL（宿主 `plugin-manager` 的 spec 定义）。
 
-### 网络到 GitHub 不顺时：用同一份文件的 CDN 地址
+### 网络到 GitHub 不顺时：用同样文件的镜像/加速地址
+
+DSH 面板的安装走 Node 网络栈（不读系统代理），所以下面每一条都是「面板里能直接填的直链」。同一台机器实测（无代理直连）：
+
+| 地址形态 | 实测 |
+| --- | --- |
+| `https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/…tgz` | 200，1.5s |
+| `https://ghfast.top/https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/…tgz` | 200，1.8s |
+| `https://gh-proxy.com/https://github.com/…/releases/download/v0.3.0/…tgz` | 200，2.0s |
+| `https://github.com/…/releases/download/v0.3.0/…tgz` | ECONNRESET（国内直连不通）|
+
+完整的一行示例：
 
 ```
 https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+https://ghfast.top/https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
 https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/xiaozhuang-dsh-chat-preset-0.3.0.tgz
 ```
 
-jsDelivr 实测可直连（本机无代理环境 200 / 29201 字节，解包内容校验通过）。
+如果面板报「无法连接」，先点一次**重试**：首次访问是冷缓存（2–3s），面板的超时比这个更短时就会误报，重试通常即成功。
 
 ### 命令行一行（自动判断 profile，不用你填名字）
 
