@@ -59,13 +59,13 @@ curl -fsSL https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@master/insta
 DSH → **设置 → 插件 → 安装插件**，把这一行粘进去：
 
 ```
-https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
+https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.1/siweimidu-conversation-import-0.3.1.tgz
 ```
 
 再粘一次（纯聊天预设，可选）：
 
 ```
-https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-chat-preset-0.3.0.tgz
+https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.1/siweimidu-chat-preset-0.3.1.tgz
 ```
 
 面板的安装框接受包名、本地路径、git 地址、tarball URL（宿主 `plugin-manager` 的 spec 定义）。
@@ -76,17 +76,17 @@ DSH 面板的安装走 Node 网络栈（不读系统代理），所以下面每�
 
 | 地址形态 | 实测 |
 | --- | --- |
-| `https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/…tgz` | 200，1.5s |
-| `https://ghfast.top/https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/…tgz` | 200，1.8s |
-| `https://gh-proxy.com/https://github.com/…/releases/download/v0.3.0/…tgz` | 200，2.0s |
-| `https://github.com/…/releases/download/v0.3.0/…tgz` | ECONNRESET（国内直连不通）|
+| `https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.1/dist/…tgz` | 200，1.5s |
+| `https://ghfast.top/https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.1/…tgz` | 200，1.8s |
+| `https://gh-proxy.com/https://github.com/…/releases/download/v0.3.1/…tgz` | 200，2.0s |
+| `https://github.com/…/releases/download/v0.3.1/…tgz` | ECONNRESET（国内直连不通）|
 
 完整的一行示例：
 
 ```
-https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/siweimidu-conversation-import-0.3.0.tgz
-https://ghfast.top/https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
-https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/siweimidu-chat-preset-0.3.0.tgz
+https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.1/dist/siweimidu-conversation-import-0.3.1.tgz
+https://ghfast.top/https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.1/siweimidu-conversation-import-0.3.1.tgz
+https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.1/dist/siweimidu-chat-preset-0.3.1.tgz
 ```
 
 如果面板报「无法连接」，先点一次**重试**：首次访问是冷缓存（2–3s），面板的超时比这个更短时就会误报，重试通常即成功。
@@ -105,14 +105,14 @@ powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
 宿主把 `--profile` 定为必填项，且 `desktop` 被 Electron 独占，所以命令行是这样一行（自动挑第一个非 desktop 的 profile）：
 
 ```powershell
-$p=(Get-ChildItem "$env:USERPROFILE\.dsh\profiles" -Directory | ?{ $_.Name -notin 'desktop','node_modules' } | Select -First 1).Name; 'conversation-import','chat-preset' | %{ dsh plugin --profile $p add "https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-$_-0.3.0.tgz" }
+$p=(Get-ChildItem "$env:USERPROFILE\.dsh\profiles" -Directory | ?{ $_.Name -notin 'desktop','node_modules' } | Select -First 1).Name; 'conversation-import','chat-preset' | %{ dsh plugin --profile $p add "https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.1/xiaozhuang-dsh-$_-0.3.1.tgz" }
 ```
 
 macOS / Linux：
 
 ```sh
 p=$(ls ~/.dsh/profiles | grep -vx -e desktop -e node_modules | head -1)
-for k in conversation-import chat-preset; do dsh plugin --profile "$p" add "https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-$k-0.3.0.tgz"; done
+for k in conversation-import chat-preset; do dsh plugin --profile "$p" add "https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.1/xiaozhuang-dsh-$k-0.3.1.tgz"; done
 ```
 
 ### 想先下载再手动选目录

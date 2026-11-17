@@ -7,8 +7,8 @@
 只要本仓库推送过，任何电脑都能直接装：
 
 ```powershell
-dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/siweimidu-conversation-import-0.3.0.tgz
-dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/siweimidu-chat-preset-0.3.0.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/siweimidu-conversation-import-0.3.1.tgz
+dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/siweimidu-chat-preset-0.3.1.tgz
 ```
 
 **为什么这条能用（已实测）**：`dsh plugin add` 把参数透传给 pnpm；pnpm 对任意 URL 都按 gzip tarball 解包，**与服务器返回的 Content-Type 无关**。我用本地静态服务器把 `.tgz` 以 `text/plain; charset=utf-8` 返回（这正是 `raw.githubusercontent.com` 的行为）再安装，profile 里依赖、`dsh.profile.bundles`、`--dump-config` 的插件行全部正确。
@@ -18,7 +18,7 @@ dsh plugin --profile desktop add https://raw.githubusercontent.com/siweimidu/dsh
 打 tag 后 CI 自动建 Release 并挂上 tarball（无 `NPM_TOKEN` 也照常产出）：
 
 ```powershell
-dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.1/siweimidu-conversation-import-0.3.1.tgz
 ```
 
 ## 备选：npm（需先发布）
@@ -64,7 +64,7 @@ dsh plugin --profile <profile> remove @siweimidu/conversation-import
 | `http://…/*.tgz`（`application/octet-stream`） | ✅ 实测 |
 | `http://…/*.tgz`（`text/plain`，模拟 raw） | ✅ 实测 |
 | **`https://raw.githubusercontent.com/siweimidu/dsh-chat-migration/master/dist/*.tgz`** | ✅ **公网实测**：HTTP 200 / 29199 字节；装进空 profile 后 `dsh.profile.bundles` 自动登记、`--dump-config` 出现 `id: conversation-import` 与 `id: chat-preset`、host 半 `import` 成功（`apply` 是函数，`inject: ["commands"]`）|
-| GitHub Release 资产 | ✅ **已产出并实测**：`v0.3.0` 两个资产（chat-preset 2489B / conversation-import 29275B），下载 sha256 `2af6c92e…` 与 GitHub 记录一致；从 Release URL 装进空 profile 成功 |
+| GitHub Release 资产 | ✅ **已产出并实测**：`v0.3.1` 两个资产（chat-preset 2489B / conversation-import 29275B），下载 sha256 `2af6c92e…` 与 GitHub 记录一致；从 Release URL 装进空 profile 成功 |
 | npm 包名 | ⛔ 未发布：`@xiaozhuang-dsh` scope 不归当前账号（`npm publish` → 404）。CI 已不自动发布，需要时本地手动跑 |
 
 ## 发布者收尾 → 已完成
@@ -72,7 +72,7 @@ dsh plugin --profile <profile> remove @siweimidu/conversation-import
 已完成并验证：
 
 - 仓库 `siweimidu/dsh-chat-migration`（public），`master` 已推送，CI 全绿；
-- `v0.3.0` tag 指向最新提交，CI 自动产出 Release 与两个 tarball 资产；
+- `v0.3.1` tag 指向最新提交，CI 自动产出 Release 与两个 tarball 资产；
 - raw URL 与 Release 资产都实测下载/安装成功。
 
 后续每次改代码：
@@ -82,7 +82,7 @@ cd dsh-chat-migration
 pnpm pack:all                      # 重打 dist/；忘打包会被 tests/dist.test.mjs 抓住
 git add -A && git commit -m "..."
 git push mine master               # raw URL 立刻跟上
-git tag -f v0.3.0 && git push -f mine v0.3.0   # 需要新 Release 资产时才打 tag
+git tag -f v0.3.1 && git push -f mine v0.3.1   # 需要新 Release 资产时才打 tag
 ```
 
 CI 只产出 Release 资产（`.github/workflows/release.yml`）。npm 发布不自动化：需要 `@xiaozhuang-dsh` scope 的凭据，届时本地执行 `pnpm --filter "@xiaozhuang-dsh/*" publish --access public`，或把包名改成你账号名下的 scope。

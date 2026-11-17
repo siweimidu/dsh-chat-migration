@@ -23,7 +23,7 @@ test('it ships a web client half declared to the host', async () => {
 
 test('targets every currently published harness line', async () => {
   const manifest = JSON.parse(await read('package.json'))
-  assert.equal(manifest.version, '0.3.0')
+  assert.equal(manifest.version, '0.3.1')
   assert.match(manifest.engines.dsh, />=0\.1\.7/)
 })
 

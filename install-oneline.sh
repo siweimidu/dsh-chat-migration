@@ -10,7 +10,7 @@
 # Override the target profile:  DSH_PLUGIN_PROFILE=web sh install-oneline.sh
 set -eu
 
-VERSION="${DSH_PLUGIN_VERSION:-v0.3.0}"
+VERSION="${DSH_PLUGIN_VERSION:-v0.3.1}"
 SEMVER="${VERSION#v}"
 REPO="siweimidu/dsh-chat-migration"
 SCOPE="@siweimidu"

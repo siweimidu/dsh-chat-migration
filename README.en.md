@@ -25,7 +25,7 @@ dsh plugin --profile desktop add @siweimidu/chat-preset
 Release tarball instead of npm:
 
 ```bash
-dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.0/siweimidu-conversation-import-0.3.0.tgz
+dsh plugin --profile desktop add https://github.com/siweimidu/dsh-chat-migration/releases/download/v0.3.1/siweimidu-conversation-import-0.3.1.tgz
 ```
 
 Local checkout:

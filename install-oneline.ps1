@@ -13,7 +13,7 @@
 
 $ErrorActionPreference = 'Stop'
 
-$version = 'v0.3.0'
+$version = 'v0.3.1'
 $semver = $version.TrimStart('v')
 $repo = 'siweimidu/dsh-chat-migration'
 $packages = @('conversation-import', 'chat-preset')

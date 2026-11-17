@@ -15,7 +15,7 @@
       powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
 #>
 param(
-  [string]$Version = 'v0.3.0'
+  [string]$Version = 'v0.3.1'
 )
 
 $ErrorActionPreference = 'Stop'
