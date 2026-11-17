@@ -691,44 +691,6 @@ window.__ModuleLoader__.load({
 			});
 		}
 		//#endregion
-		//#region src/client/SettingsIcon.tsx
-		function ImportSettingsIcon({ size, className }) {
-			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("svg", {
-				width: size,
-				height: size,
-				className,
-				viewBox: "0 0 16 16",
-				fill: "none",
-				xmlns: "http://www.w3.org/2000/svg",
-				children: [
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("path", {
-						fillRule: "evenodd",
-						clipRule: "evenodd",
-						d: "M3.25 1.5h9.5A2.75 2.75 0 0 1 15.5 4.25v5A2.75 2.75 0 0 1 12.75 12H8.42l-2.77 2.17a.7.7 0 0 1-1.13-.55V12H3.25A2.75 2.75 0 0 1 .5 9.25v-5A2.75 2.75 0 0 1 3.25 1.5Zm0 1.3A1.45 1.45 0 0 0 1.8 4.25v5a1.45 1.45 0 0 0 1.45 1.45h2.57v1.48l2.15-1.48h4.78a1.45 1.45 0 0 0 1.45-1.45v-5a1.45 1.45 0 0 0-1.45-1.45h-9.5Z",
-						fill: "currentColor"
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
-						cx: "5",
-						cy: "6.75",
-						r: ".75",
-						fill: "currentColor"
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
-						cx: "8",
-						cy: "6.75",
-						r: ".75",
-						fill: "currentColor"
-					}),
-					/* @__PURE__ */ (0, react_jsx_runtime.jsx)("circle", {
-						cx: "11",
-						cy: "6.75",
-						r: ".75",
-						fill: "currentColor"
-					})
-				]
-			});
-		}
-		//#endregion
 		//#region src/client/Dialog.tsx
 		/**
 		* Modal shared by the Session Header button and this browser's `/export` command.
@@ -955,10 +917,6 @@ window.__ModuleLoader__.load({
 					refreshSessions: () => sessions.refresh()
 				})
 			}, DeepSeekImportSection));
-			ctx.slots.inject("settings.section.icon", () => ctx.slots.register({
-				name: "settings.section.icon",
-				key: "conversation-import"
-			}, ImportSettingsIcon));
 		}
 		//#endregion
 		exports.apply = apply;

@@ -1,68 +1,84 @@
 {
-  "name": "@deepseek-ai/dsh-composer-add-menu",
-  "description": "Native unified commands, plugins, skills and attachments menu for the DSH composer",
-  "version": "0.2.0",
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/niushuanan/xiaozhuang-dsh.git",
-    "directory": "packages/client/ui-composer-add-menu"
-  },
-  "type": "module",
-  "main": "lib/index.js",
-  "types": "lib/types/index.d.ts",
-  "exports": {
-    ".": {
-      "types": "./lib/types/index.d.ts",
-      "default": "./lib/index.js"
-    },
-    "./client": {
-      "types": "./lib/types/client/index.d.ts",
-      "default": "./lib/client.js"
-    },
-    "./src/*": "./src/*",
-    "./package.json": "./package.json"
-  },
-  "dsh": {
-    "client": {
-      "inject": [
-        "@deepseek-ai/dsh-api-session-controller",
-        "@deepseek-ai/dsh-client-locale",
-        "@deepseek-ai/dsh-client-ui-conversation",
-        "@deepseek-ai/dsh-client-ui-primitives"
-      ],
-      "platform": "web"
-    }
-  },
-  "scripts": {
-    "bundle": "tsdown",
-    "watch": "tsdown --watch"
-  },
-  "license": "MIT",
-  "peerDependencies": {
-    "@deepseek-ai/cordis": "workspace:^",
-    "@deepseek-ai/dsh-api-session-controller": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-conversation": "workspace:^",
-    "@deepseek-ai/dsh-client-locale": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-renderer": "workspace:^"
-  },
-  "devDependencies": {
-    "@deepseek-ai/cordis": "workspace:^",
-    "@deepseek-ai/dsh-api-session-controller": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-conversation": "workspace:^",
-    "@deepseek-ai/dsh-client-locale": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-primitives": "workspace:^",
-    "@deepseek-ai/dsh-client-ui-slots": "workspace:^",
-    "@testing-library/react": "^16.3.2",
-    "@types/react": "~18.3.1",
-    "react": "^18.2.0",
-    "@deepseek-ai/dsh-client-ui-renderer": "workspace:^"
-  },
-  "files": [
-    "lib/index.js",
-    "lib/client.js",
-    "lib/types/**/*.d.ts"
-  ]
+    "name":  "@xiaozhuang-dsh/composer-add-menu",
+    "version":  "0.3.0",
+    "description":  "Unified commands, plugins, skills and attachments menu for the DeepSeek Harness composer.",
+    "keywords":  [
+                     "dsh",
+                     "dsh-plugin",
+                     "deepseek-harness",
+                     "composer",
+                     "slash-commands"
+                 ],
+    "license":  "MIT",
+    "publishConfig":  {
+                          "access":  "public"
+                      },
+    "repository":  {
+                       "type":  "git",
+                       "url":  "git+https://github.com/niushuanan/dsh-chat-migration.git",
+                       "directory":  "packages/composer-add-menu"
+                   },
+    "homepage":  "https://github.com/niushuanan/dsh-chat-migration#readme",
+    "type":  "module",
+    "main":  "lib/index.js",
+    "types":  "lib/types/index.d.ts",
+    "exports":  {
+                    ".":  {
+                              "types":  "./lib/types/index.d.ts",
+                              "default":  "./lib/index.js"
+                          },
+                    "./client":  {
+                                     "types":  "./lib/types/client/index.d.ts",
+                                     "default":  "./lib/client.js"
+                                 },
+                    "./package.json":  "./package.json"
+                },
+    "files":  [
+                  "lib/index.js",
+                  "lib/client.js",
+                  "lib/types/**/*.d.ts",
+                  "cordis.patch.yml",
+                  "README.md",
+                  "README.zh.md",
+                  "README.i18n.yaml"
+              ],
+    "scripts":  {
+                    "build":  "tsdown",
+                    "typecheck":  "tsc -p tsconfig.json"
+                },
+    "peerDependencies":  {
+                             "@deepseek-ai/cordis":  "\u003e=4.0.0-rc \u003c5",
+                             "@deepseek-ai/dsh-client-locale":  "\u003e=0.1.7-0 \u003c0.3.0-0",
+                             "@deepseek-ai/dsh-client-ui-conversation":  "\u003e=0.1.7-0 \u003c0.3.0-0",
+                             "@deepseek-ai/dsh-client-ui-primitives":  "\u003e=0.1.7-0 \u003c0.3.0-0",
+                             "@deepseek-ai/dsh-client-ui-renderer":  "\u003e=0.1.7-0 \u003c0.3.0-0",
+                             "@deepseek-ai/dsh-client-ui-slots":  "\u003e=0.1.7-0 \u003c0.3.0-0"
+                         },
+    "devDependencies":  {
+                            "@deepseek-ai/cordis":  "4.0.5",
+                            "@deepseek-ai/dsh-client-locale":  "0.2.1-rc.2",
+                            "@deepseek-ai/dsh-client-ui-conversation":  "0.2.1-rc.2",
+                            "@deepseek-ai/dsh-client-ui-primitives":  "0.2.1-rc.2",
+                            "@deepseek-ai/dsh-client-ui-renderer":  "0.2.1-rc.2",
+                            "@deepseek-ai/dsh-client-ui-slots":  "0.2.1-rc.2",
+                            "@types/react":  "~18.3.1",
+                            "react":  "^18.2.0"
+                        },
+    "dsh":  {
+                "bundle":  {
+                               "patch":  "./cordis.patch.yml"
+                           },
+                "client":  {
+                               "platform":  "web",
+                               "inject":  [
+                                              "@deepseek-ai/dsh-client-locale",
+                                              "@deepseek-ai/dsh-client-ui-conversation",
+                                              "@deepseek-ai/dsh-client-ui-primitives"
+                                          ]
+                           }
+            },
+    "engines":  {
+                    "dsh":  "\u003e=0.1.7"
+                },
+    "private":  true
 }

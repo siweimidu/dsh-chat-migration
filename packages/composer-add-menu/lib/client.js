@@ -1,5 +1,5 @@
 window.__ModuleLoader__.load({
-	id: "@deepseek-ai/dsh-composer-add-menu",
+	id: "@xiaozhuang-dsh/composer-add-menu",
 	factory: (require) => {
 		var module = { exports: {} };
 		var exports = module.exports;

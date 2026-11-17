@@ -1,0 +1,3 @@
+- insert:
+    - id: composer-add-menu
+      name: ./lib/index.js

@@ -1,0 +1,3 @@
+- insert:
+    - id: chat-preset
+      name: ./lib/index.js

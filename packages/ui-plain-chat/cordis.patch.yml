@@ -1,0 +1,3 @@
+- insert:
+    - id: ui-plain-chat
+      name: ./lib/index.js
