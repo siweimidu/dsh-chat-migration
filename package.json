@@ -1,0 +1,30 @@
+{
+  "name": "dsh-chat-migration",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Standard, installable DeepSeek Harness plugins for conversation migration and plain-chat mode.",
+  "license": "MIT",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niushuanan/dsh-chat-migration.git"
+  },
+  "scripts": {
+    "build": "pnpm -r run build",
+    "typecheck": "pnpm -r run typecheck",
+    "test": "node --test tests/ packages/*/tests/",
+    "check:manifests": "node scripts/check-manifests.mjs",
+    "compat:matrix": "node scripts/compat-matrix.mjs",
+    "pack:all": "pnpm -r exec pnpm pack --pack-destination ../../dist"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
+    "tsdown": "^0.15.0",
+    "typescript": "~5.7.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
