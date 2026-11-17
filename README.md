@@ -15,11 +15,32 @@
 
 后两个包为什么没移植、缺什么、怎么补：见 [未移植的两个插件](#未移植的两个插件)。
 
-## 安装（任何电脑，一条 URL）
+## 一行命令安装（任何电脑）
 
-**不需要 GitHub 账号**：下面是公开下载地址，任何人可装。装完重启 DSH 生效。
+**Windows**（PowerShell）
 
-### 桌面版：一条 URL，粘进插件面板（不用填任何名字）
+```powershell
+irm https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@master/install-oneline.ps1 | iex
+```
+
+**macOS / Linux**
+
+```sh
+curl -fsSL https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@master/install-oneline.sh | sh
+```
+
+这一行会自己完成全部步骤：找到 DSH → 选 profile（有 `desktop` 就用它）→ 多源下载（jsDelivr → ghfast → GitHub → raw）→ 把包写进该 profile 的 `node_modules` → 登记到 `dsh.profile.bundles`。
+
+- **不需要** GitHub 账号、npm 账号、代理，**也不用**填 profile 名；
+- 不依赖插件面板的网络（面板有独立出口，经常连不上任何外部地址）；
+- 改 `package.json` 前会备份成 `package.json.bak`，回滚就是还原它并删掉 `node_modules/@xiaozhuang-dsh`；
+- 想装到别的 profile：`$env:DSH_PLUGIN_PROFILE='web'` 后再跑（sh 用 `DSH_PLUGIN_PROFILE=web`）。
+
+装完**完全退出 DSH 再启动**，设置里出现「导入对话」。
+
+> 已验证：在真实 `desktop` profile 上跑通，两个包 `checkManifest` 均为 `contract OK`，host 半 `apply: function, inject: ["commands"]` 可加载。
+
+### 备选：面板里粘 URL 或本地路径
 
 DSH → **设置 → 插件 → 安装插件**，把这一行粘进去：
 
