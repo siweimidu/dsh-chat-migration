@@ -10,8 +10,9 @@
     "url": "git+https://github.com/niushuanan/dsh-chat-migration.git"
   },
   "scripts": {
-    "build": "pnpm -r run build",
-    "typecheck": "pnpm -r run typecheck",
+    "build": "pnpm -r --filter \"./packages/conversation-import\" --filter \"./packages/chat-preset\" run build",
+    "typecheck": "pnpm --filter \"@xiaozhuang-dsh/conversation-import\" --filter \"@xiaozhuang-dsh/chat-preset\" run typecheck",
+    "typecheck:all": "pnpm -r run typecheck",
     "test": "node --test tests/ packages/*/tests/",
     "check:manifests": "node scripts/check-manifests.mjs",
     "compat:matrix": "node scripts/compat-matrix.mjs",

@@ -1,47 +1,84 @@
 # dsh-chat-migration
 
-Conversation import **0.2.1** restores its original chat-bubble artwork through a plugin-owned Settings icon registration. The shared compatibility patch fixes keyed icon dispatch; chat mode retains its existing version.
+DeepSeek conversation-history import and DSH session export, packaged as **standard DeepSeek Harness plugins**: install with one `dsh plugin add`, no host patches, no fork required.
 
-Current master targets Harness **0.2.1-alpha.1** and includes the native plugin upgrade made with [dsh-plugin-upgrade-skill](https://github.com/oh-my-dsh/dsh-plugin-upgrade-skill/). Download the current branch for this source update; existing releases retain their original version.
+[中文](./README.md) | English
 
-English | [中文](README.md)
+## What you get
 
-[![DSH Plugin](https://img.shields.io/badge/DSH-Plugin-111111)](https://github.com/niushuanan/xiaozhuang-dsh) [![MIT](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
-
-This bundle repository provides two native plugins that can be installed, switched, and exported independently. **Chat mode** enables direct conversation without a bound workspace or local execution access. **Import conversations** migrates history exported by the official DeepSeek service into DeepSeek Harness. Original titles, chronological order, prompts, answers, and exported reasoning are mapped into native chat records.
-
-<p align="center"><img src="docs/06-chat-import.webp" alt="DeepSeek history import Settings page" width="800"></p>
-
-<p align="center"><img src="docs/06-pure-chat.webp" alt="Workspace-free chat mode" width="800"></p>
-
-Current master ships complete native plugin folders and preserves each Settings entry's original plugin-owned icon. Remove its folder to uninstall the capability. See [INSTALL.md](INSTALL.md) for shared compatibility patches and installation checks.
-
-The shared history reader supports Safari desktop windows' native JSON representation, preventing valid Agent answers and tool results from being rejected before display. Reopening a desktop window restores a valid saved login automatically without repeated launch-token entry. Installation checks must open old answers, expand tool results, and load earlier records in the user's actual browser; titles or a Chrome-only check do not prove complete history.
+| Package | Status | Capability |
+| --- | --- | --- |
+| `@xiaozhuang-dsh/conversation-import` | ✅ installable | Import DeepSeek conversation history (preview → select → import as local sessions), export DSH sessions as a downloadable archive, "Import conversations" settings section |
+| `@xiaozhuang-dsh/chat-preset` | ✅ installable | Registers the removable `chat` plain-chat agent preset |
+| `@xiaozhuang-dsh/composer-add-menu` | ⛔ not ported | Composer "+" menu (commands / plugins / skills / attachments) |
+| `@xiaozhuang-dsh/ui-plain-chat` | ⛔ not ported | Sidebar chat entry + plain-chat presentation layer |
 
 ## Install
 
-1. Use GitHub **Code → Download ZIP** to download this repository.
-2. Give the ZIP to an AI that can read and modify the target DSH project.
-3. Tell the AI: **Read AGENTS.md, INSTALL.md, and manifest.json first. Install only this plugin and preserve existing plugins, data, conversations, attachments, and settings.**
-4. Enable **Chat mode** and **Import conversations** separately under **Settings → Xiaozhuang plugins**. If only one is needed, the installing AI can install just that entry from `manifest.json`.
+```bash
+dsh plugin --profile desktop add @xiaozhuang-dsh/conversation-import
+dsh plugin --profile desktop add @xiaozhuang-dsh/chat-preset
+```
 
-## Use
+`dsh plugin add` registers the package in that profile's `dsh.profile.bundles` automatically; restart DSH to load it.
 
-1. In the official DeepSeek app, open **Me → System settings → Data management → Export all conversation history**.
-2. In DSH, open **Settings → Import conversations** and select the exported JSON or ZIP.
-3. Wait for parsing, then search and select the exact conversation windows to migrate. New records are selected by default; previously imported records are clearly marked and cannot create duplicates.
-4. Confirm the import. Imported records appear under Chats in their original chronology. Re-importing the same export skips conversations that already exist.
+Release tarball instead of npm:
 
-## Contents
+```bash
+dsh plugin --profile desktop add https://github.com/niushuanan/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+```
 
-- <code>payload/chat-mode/</code>: generated Chat mode and its direct runtime dependencies from the main repository.
-- <code>payload/conversation-import/</code>: generated DeepSeek importer and its direct runtime dependencies from the main repository.
-- <code>manifest.json</code>: two independent plugins, their Cordis rows, the source commit, and per-file SHA-256.
-- <code>INSTALL.md</code>: direct installation, conflict adaptation, failure recovery, and narrow verification.
-- <code>docs/</code>: real product screenshots from this version.
+Local checkout:
 
-This repository never contains a user's DeepSeek export, conversation history, account, credentials, or local settings.
+```bash
+dsh plugin --profile desktop add link:/absolute/path/to/dsh-chat-migration/packages/conversation-import
+```
 
-## Source and license
+Remove:
 
-This repository is a one-way distribution mirror of [Xiaozhuang DSH](https://github.com/niushuanan/xiaozhuang-dsh), not an independent development source. It is synchronized from main-repository commit [`198c2edb37`](https://github.com/niushuanan/xiaozhuang-dsh/commit/198c2edb37c4dcf1c3844831e946a57ed7259e8e). Licensed under the [MIT License](LICENSE).
+```bash
+dsh plugin --profile desktop remove @xiaozhuang-dsh/conversation-import
+```
+
+## Compatibility
+
+`engines.dsh >= 0.1.7`. Measured (not asserted) results in [docs/COMPATIBILITY.md](./docs/COMPATIBILITY.md): both slots these plugins register into exist in `0.1.7-rc.2`, `0.2.0-rc.2`, `0.2.1-rc.2` and `0.2.2-rc.3`, and all eight runtime host packages are available in all four. Regenerate with `pnpm compat:matrix`.
+
+Real command output is recorded in [docs/VERIFICATION.md](./docs/VERIFICATION.md).
+
+## Why two packages are not ported
+
+`composer-add-menu` and `ui-plain-chat` depend on private contracts of the upstream fork that stock DSH does not expose:
+
+- `composer-add-menu` needs the `conversation.input.add` slot, whose owner supplies ~18 composer props (command/skill/plugin catalogs, attachment callbacks, `focusInput`, `onInsertSlashItem`). Stock renders `conversation.input.left` with `{}`. Porting means rewiring to the public `commandUi` / `inputTriggers` / `fileUpload` client services **and** rebuilding `lib/client.js` with a CSS-Modules-capable pipeline.
+- `ui-plain-chat` needs `sidebar.primary.action`, the `conversationPresentation` service and `uiWorkspace.registerSessionGroup`. None exist on stock (`uiWorkspace.openSession/startSession/newSession` do). Its closest surface today is `sidebar.footer.action`, which only passes `{ wide }`.
+
+Both stay `private: true`, and a test enforces that so they cannot be installed into a host where they would render nothing.
+
+Known build gap: `lib/client.js` files are upstream toolchain artifacts. The tsdown config in this repo rebuilds the host half; the client half still needs CSS Modules support (rolldown currently compiles the class map to an empty object). Until that is fixed, client-side changes are "edit source + sync the artifact + lock it with tests".
+
+## Layout
+
+```
+packages/<id>/          four self-contained, installable packages
+scripts/check-manifests.mjs   install-contract checker
+scripts/compat-matrix.mjs     measured host slot/package availability
+legacy/                 upstream fork export (old payload/, core patches) — reference only
+docs/                   design, compatibility matrix, verification log
+```
+
+`legacy/payload/shared/*.patch` patched the DSH core itself. This repo no longer needs or supports that: a standard plugin must not modify the host.
+
+## Development
+
+```bash
+pnpm install
+pnpm check:manifests
+pnpm test
+pnpm typecheck
+pnpm compat:matrix
+```
+
+## License
+
+MIT — see [LICENSE](./LICENSE). Sources derive from a one-way export of Xiaozhuang DSH (kept in [legacy/](./legacy/)).

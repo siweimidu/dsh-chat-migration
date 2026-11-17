@@ -1,47 +1,101 @@
 # dsh-chat-migration
 
-导入对话 **0.2.1** 恢复原有聊天气泡设置图标，由导入插件自己提供并注册；公共兼容补丁修复 keyed 图标选择。聊天模式继续沿用当前版本。
+把 DeepSeek 对话历史导入 DSH、把会话导出成可迁移文件——做成**标准 DSH 插件**，`dsh plugin add` 一条命令装进任意 profile，不需要改宿主源码、不需要打补丁、不需要 fork。
 
-当前 master 面向 Harness **0.2.1-alpha.1**，已使用 [dsh-plugin-upgrade-skill](https://github.com/oh-my-dsh/dsh-plugin-upgrade-skill/) 完成原生插件适配。下载当前分支获得本次源码更新；既有 Release 保持各自原版本。
+[English](./README.en.md) | 中文
 
-[English](README.en.md) | 中文
+## 装什么
 
-[![DSH Plugin](https://img.shields.io/badge/DSH-Plugin-111111)](https://github.com/niushuanan/xiaozhuang-dsh) [![MIT](https://img.shields.io/badge/license-MIT-16a34a)](LICENSE)
+| 包 | 状态 | 能力 |
+| --- | --- | --- |
+| `@xiaozhuang-dsh/conversation-import` | ✅ 可安装 | DeepSeek 对话历史导入（预览 + 选择 + 导入成本地会话）、DSH 会话导出下载、设置页「导入对话」 |
+| `@xiaozhuang-dsh/chat-preset` | ✅ 可安装 | 注册可移除的纯聊天 agent preset（`chat`） |
+| `@xiaozhuang-dsh/composer-add-menu` | ⛔ 未移植 | 输入框加号菜单（命令/插件/技能/附件） |
+| `@xiaozhuang-dsh/ui-plain-chat` | ⛔ 未移植 | 侧栏「聊天」入口 + 纯聊天表现层 |
 
-本组合仓库提供两个可独立安装、启停和导出的原生插件：“聊天模式”用于不绑定工作区、不授予本地执行权限地直接聊天；“导入对话”用于把 DeepSeek 官方平台导出的历史迁入 DeepSeek Harness。原始标题、时间顺序、问题、回答和导出中已有的思维过程会映射到原生聊天记录。
-
-<p align="center"><img src="docs/06-chat-import.webp" alt="DeepSeek 历史对话导入设置页" width="800"></p>
-
-<p align="center"><img src="docs/06-pure-chat.webp" alt="无工作区约束的聊天模式" width="800"></p>
-
-当前 master 按原生插件文件夹发布，设置入口保留插件自有的原设计图标；删除对应插件文件夹即可卸载。共享兼容补丁和安装检查见 [INSTALL.md](INSTALL.md)。
-
-共享历史读取器支持 Safari 桌面窗口的原生 JSON 表示，避免合法 Agent 回答和工具结果被误判后停止显示。重新打开桌面窗口时自动恢复仍有效的已保存登录，不要求反复填写启动令牌。安装验收需在实际使用的浏览器中打开旧回答、展开工具结果并加载更早记录，不能仅凭会话标题或 Chrome 验证认定历史完整。
+后两个包为什么没移植、缺什么、怎么补：见 [未移植的两个插件](#未移植的两个插件)。
 
 ## 安装
 
-1. 点击 GitHub 的 **Code → Download ZIP**，下载本仓库。
-2. 把 ZIP 交给能够读取并修改目标 DSH 项目的 AI。
-3. 对 AI 说：**先阅读 AGENTS.md、INSTALL.md 和 manifest.json，只安装这个插件，并保留现有插件、数据、对话、附件和设置。**
-4. 安装后在 **设置 → 小庄的插件** 分别启用“聊天模式”和“导入对话”。只需要其中一项时，安装 AI 也可以按 `manifest.json` 只安装对应插件。
+### 从 npm
 
-## 使用
+```bash
+dsh plugin --profile desktop add @xiaozhuang-dsh/conversation-import
+dsh plugin --profile desktop add @xiaozhuang-dsh/chat-preset
+```
 
-1. 在 DeepSeek 官方应用依次进入 **我的 → 系统设置 → 数据管理 → 导出所有历史对话**。
-2. 在 DSH 打开 **设置 → 导入对话**，选择官方导出的 JSON 或 ZIP。
-3. 等待解析完成，在按独立对话窗口列出的预览中搜索、勾选真正需要迁移的记录；新记录默认选中，已经导入的记录会明确标记且不会生成副本。
-4. 确认导入；历史会进入侧栏“聊天”目录，并按原始时间排列。重复导入同一份记录会跳过已有对话。
+`dsh plugin add` 会自动把它写进该 profile 的 `dsh.profile.bundles`，重启 DSH 后生效。
 
-## 内容
+### 从 GitHub Release 的 tarball（不发 npm 也能装）
 
-- <code>payload/chat-mode/</code>：从主仓库生成的聊天模式及其直接运行依赖。
-- <code>payload/conversation-import/</code>：从主仓库生成的 DeepSeek 导入器及其直接运行依赖。
-- <code>manifest.json</code>：两个独立插件、Cordis 行、来源 commit 和逐文件 SHA-256。
-- <code>INSTALL.md</code>：直接安装、冲突适配、失败恢复和最小验证说明。
-- <code>docs/</code>：当前版本的真实产品截图。
+```bash
+dsh plugin --profile desktop add https://github.com/niushuanan/dsh-chat-migration/releases/download/v0.3.0/xiaozhuang-dsh-conversation-import-0.3.0.tgz
+```
 
-本仓库不会包含用户的 DeepSeek 导出文件、对话历史、账号、密钥或本机设置。
+### 从本地仓库（开发/试用）
 
-## 来源与许可
+```bash
+dsh plugin --profile desktop add link:/absolute/path/to/dsh-chat-migration/packages/conversation-import
+```
 
-本仓库是 [Xiaozhuang DSH](https://github.com/niushuanan/xiaozhuang-dsh) 的单向发布副本，不是独立开发源。当前内容同步自主仓库 commit [`198c2edb37`](https://github.com/niushuanan/xiaozhuang-dsh/commit/198c2edb37c4dcf1c3844831e946a57ed7259e8e)。代码采用 [MIT License](LICENSE)。
+### 卸载 / 回滚
+
+```bash
+dsh plugin --profile desktop remove @xiaozhuang-dsh/conversation-import
+```
+
+## 兼容性
+
+宿主版本区间：`engines.dsh >= 0.1.7`。**实测**（不是声明）结果见 [docs/COMPATIBILITY.md](./docs/COMPATIBILITY.md)：
+
+- 插件注册的两个 slot（`settings.section`、`conversation.session.header.utilities`）在 `0.1.7-rc.2`、`0.2.0-rc.2`、`0.2.1-rc.2`、`0.2.2-rc.3` 全部存在；
+- 8 个运行时依赖包在这 4 个版本里全部可获取；
+- 矩阵由 `pnpm compat:matrix` 现场从 npm 拉包解包核对，可重跑。
+
+验收过程与真实命令输出见 [docs/VERIFICATION.md](./docs/VERIFICATION.md)。
+
+## 未移植的两个插件
+
+`composer-add-menu` 与 `ui-plain-chat` 依赖的是**上游 fork 私有契约**，标准宿主没有对应扩展点，硬装上去只会渲染出空壳。它们现在 `private: true`，测试会强制这一点，避免误装。
+
+具体缺什么：
+
+| 插件 | 依赖的私有契约 | 标准宿主现状 | 移植要做什么 |
+| --- | --- | --- | --- |
+| `composer-add-menu` | slot `conversation.input.add`，owner 侧注入约 18 个 props（命令表、插件表、技能表、附件回调、`focusInput`、`onInsertSlashItem`…） | 没有该 slot；`conversation.input.left` 只给 `{}` | 改成从公开 client service 取数据（`commandUi`、`inputTriggers`、`fileUpload`），重写组件与样式，**并用能处理 CSS Modules 的构建链重建 `lib/client.js`** |
+| `ui-plain-chat` | slot `sidebar.primary.action`；service `conversationPresentation`（隐藏 hero 配置/输入框模式/辅助面板）；`uiWorkspace.registerSessionGroup` | 三个都不存在（`uiWorkspace.openSession/startSession/newSession` 有，`registerSessionGroup` 没有） | 入口改挂 `sidebar.footer.action`（props 只有 `{ wide }`），丢掉表现层与分组的等价能力，或找到新的公开替代表达 |
+
+已知的构建缺口：仓库里的 `lib/client.js` 是上游工具链产物；本仓库的 tsdown 配置能重建 **host 半**，client 半还缺 CSS Modules 支持（rolldown 那条链路目前把 class map 编译成空对象）。因此现阶段对 client 半的改动是"改源码 + 同步产物 + 测试锁死"，不是"改源码就能出包"。这一条在移植前必须补上。
+
+## 仓库结构
+
+```
+packages/<id>/          四个插件包（每个都是自包含可安装包）
+  src/                  源码（TypeScript / React）
+  lib/                  已构建产物（host: ESM，client: __ModuleLoader__ 工厂）
+  cordis.patch.yml      声明插入宿主的行
+  tests/                包级契约测试
+scripts/check-manifests.mjs   安装契约校验器（无 workspace: / patch 可解析 / client 声明完整）
+scripts/compat-matrix.mjs     实测宿主 slot 与依赖包可用性
+legacy/                 上游 fork 导出物：旧 payload/、manifest.json、INSTALL.md、四个核心补丁（仅作参考）
+docs/                   设计、兼容矩阵、验收记录
+```
+
+`legacy/payload/shared/*.patch` 是给 DSH 本体打补丁的旧方案——**本仓库不再需要、也不再支持**。标准插件不允许修改宿主。
+
+## 开发
+
+```bash
+pnpm install
+pnpm check:manifests     # 安装契约
+pnpm test                # 26 个测试
+pnpm typecheck           # 对已发布宿主类型做类型检查（两个可安装包）
+pnpm typecheck:all       # 含未移植包；在移植完成前必然是红的
+pnpm compat:matrix       # 重新测量 4 个宿主版本
+```
+
+`pnpm typecheck:all` 现在报的错就是移植清单本身：`conversation.input.add` / `sidebar.primary.action` 不在宿主 slot 联合类型里，`ctx.conversationPresentation` 不存在——编译器的报错就是「缺什么」的权威答案。
+
+## 许可
+
+MIT，见 [LICENSE](./LICENSE)。源码派生自 Xiaozhuang DSH 的单向导出（见 [legacy/](./legacy/)）。

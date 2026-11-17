@@ -2,46 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "rootDir": "src",
-    "outDir": "lib/types",
-    "tsBuildInfoFile": "lib/tsconfig.host.tsbuildinfo"
+    "outDir": "lib/types"
   },
-  "files": [
-    "src/archive.ts",
-    "src/deepseek-import.ts",
-    "src/deepseek-import-types.ts",
-    "src/index.ts",
-    "src/invariant.ts"
-  ],
-  "references": [
-    {
-      "path": "../../vendor/cordis"
-    },
-    {
-      "path": "../../vendor/schemastery"
-    },
-    {
-      "path": "../../packages/attachment/attachment"
-    },
-    {
-      "path": "../../packages/core/session"
-    },
-    {
-      "path": "../../packages/llm/llm"
-    },
-    {
-      "path": "../../packages/interaction/commands"
-    },
-    {
-      "path": "../../packages/session/session-persistence"
-    },
-    {
-      "path": "../../packages/session/session-title"
-    },
-    {
-      "path": "../../packages/session-query/session-log-export/tsconfig.host.json"
-    },
-    {
-      "path": "../../packages/session-query/session-query"
-    }
-  ]
+  "include": ["src/index.ts", "src/archive.ts", "src/deepseek-import.ts", "src/deepseek-import-types.ts"]
 }

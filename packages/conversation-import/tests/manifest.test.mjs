@@ -57,6 +57,13 @@ test('the client bundle keeps the host module-loader contract', async () => {
   assert.match(bundle, /exports\.apply = apply/)
 })
 
+test('the client bundle guards fork-only primitives behind a runtime fallback', async () => {
+  const bundle = await read('lib/client.js')
+  // Stock DSH has no SettingsSectionHeader primitive; calling it directly would crash the settings page.
+  assert.equal(bundle.includes('jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSectionHeader,'), false)
+  assert.match(bundle, /SettingsSectionHeaderFallback/)
+})
+
 test('the host half emits a replaceable cordis row', async () => {
   const patch = await read('cordis.patch.yml')
   assert.match(patch, /id: conversation-import/)

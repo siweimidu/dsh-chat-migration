@@ -7,6 +7,12 @@ window.__ModuleLoader__.load({
 		let _deepseek_ai_dsh_client_store = require("@deepseek-ai/dsh-client-store");
 		let react = require("react");
 		let _deepseek_ai_dsh_client_ui_primitives = require("@deepseek-ai/dsh-client-ui-primitives");
+		var SettingsSectionHeaderFallback = _deepseek_ai_dsh_client_ui_primitives.SettingsSectionHeader != null
+			? _deepseek_ai_dsh_client_ui_primitives.SettingsSectionHeader
+			: (props) => react_jsx_runtime.jsx("header", { className: props.className, children: [
+				react_jsx_runtime.jsx("h2", { children: props.title }),
+				react_jsx_runtime.jsx("p", { children: props.description })
+			] });
 		let react_jsx_runtime = require("react/jsx-runtime");
 		//#region src/client/image-export.ts
 		const LOGICAL_WIDTH = 1080;
@@ -520,7 +526,7 @@ window.__ModuleLoader__.load({
 			return /* @__PURE__ */ (0, react_jsx_runtime.jsxs)("section", {
 				className: DeepSeekImportSection_module_css_default.root,
 				"aria-label": "导入对话",
-				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(_deepseek_ai_dsh_client_ui_primitives.SettingsSectionHeader, {
+				children: [/* @__PURE__ */ (0, react_jsx_runtime.jsx)(SettingsSectionHeaderFallback, {
 					className: DeepSeekImportSection_module_css_default.header,
 					title: "导入对话",
 					description: "先预览 DeepSeek 导出的每个对话窗口，再选择真正需要迁移的内容。"
