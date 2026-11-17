@@ -57,9 +57,13 @@ foreach ($name in $packages) {
   if (Test-Path $dir) { Remove-Item $dir -Recurse -Force }
   New-Item -ItemType Directory -Force $dir | Out-Null
   tar -xzf $tgz -C $dir
-  Remove-Item $tgz -Force
 }
 
 Write-Host ''
-Write-Host 'Unpacked. Install them from the plugin panel (Settings -> Plugins -> install from local folder):'
-foreach ($name in $packages) { Write-Host "  $(Join-Path (Join-Path $root $name) 'package')" }
+Write-Host 'Unpacked. Two ways to install from the DSH plugin panel (Settings -> Plugins):'
+Write-Host ''
+Write-Host '  1) paste the tarball path (the panel treats it as a .tgz / 压缩包):'
+foreach ($name in $packages) { Write-Host "     $(Join-Path $root "xiaozhuang-dsh-$name-$semver.tgz")" }
+Write-Host ''
+Write-Host '  2) or install from a local folder:'
+foreach ($name in $packages) { Write-Host "     $(Join-Path (Join-Path $root $name) 'package')" }

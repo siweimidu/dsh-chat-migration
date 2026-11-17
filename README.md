@@ -56,6 +56,15 @@ https://cdn.jsdelivr.net/gh/siweimidu/dsh-chat-migration@v0.3.0/dist/xiaozhuang-
 
 如果面板报「无法连接」，先点一次**重试**：首次访问是冷缓存（2–3s），面板的超时比这个更短时就会误报，重试通常即成功。
 
+如果重试仍然连不上（说明这台机器的面板进程没有可用出口），改填**本地路径**——面板接受 `.tgz` 绝对路径和本地目录，两种都不需要网络：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
+# 脚本会打印可直接粘贴的 .tgz 路径与解包目录路径
+```
+
+实测（用与面板相同的安装机制）：从本地 `.tgz` 绝对路径安装返回 `Done`，配置层出现 `id: conversation-import`，host 半 `apply` 可加载。
+
 ### 命令行一行（自动判断 profile，不用你填名字）
 
 宿主把 `--profile` 定为必填项，且 `desktop` 被 Electron 独占，所以命令行是这样一行（自动挑第一个非 desktop 的 profile）：
