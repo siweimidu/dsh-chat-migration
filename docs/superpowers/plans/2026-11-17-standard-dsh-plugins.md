@@ -1,5 +1,12 @@
 # 把 dsh-chat-migration 改造成标准 DSH 插件 Implementation Plan
 
+> **执行结果（2026-11-17）**：Task 1–7、11 完成并有真实证据（见 `docs/VERIFICATION.md`、`docs/COMPATIBILITY.md`）。
+> Task 8 完成（chat-preset 可安装）。**Task 9 / 10 未执行**：`composer-add-menu` 与 `ui-plain-chat` 依赖 fork 私有契约，
+> 编译器在 stock 类型上明确报错（`conversation.input.add` / `sidebar.primary.action` 不在 slot 联合类型里，
+> `ctx.conversationPresentation` 不存在，owner props 全线缺失），且本仓库尚无 CSS Modules 构建链——两包已标 `private: true`，
+> 测试强制其不可安装，README 写明移植所需工作。Task 12 的 desktop profile 安装被宿主拒绝（`desktop` profile 由 Electron 独占），
+> 改由插件面板的本地目录安装完成，步骤见 `docs/VERIFICATION.md` 第 7 节。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 把仓库里的两份 fork 导出物改造成可 `dsh plugin add` 直接安装、零核心补丁的四个标准 DSH 插件包，并发布到 npm + GitHub Release tarball。

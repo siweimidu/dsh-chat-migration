@@ -86,7 +86,19 @@ $ dsh --profile plugintar --dump-config | grep conversation-import
 `settings.section` 与 `conversation.session.header.utilities` 在 **0.1.7-rc.2 / 0.2.0-rc.2 / 0.2.1-rc.2 / 0.2.2-rc.3 全部存在**，
 8 个运行时依赖包在 4 个版本里全部可获取。
 
-## 7. 已知未验收项
+## 7. desktop profile：CLI 拒绝，改走插件面板
+
+```
+$ dsh plugin --profile desktop add <...>.tgz
+error: profile "desktop" is managed exclusively by the Electron application
+```
+
+`desktop` profile 归 Electron 应用独占，命令行不能装。装法是在 DSH 里 **设置 → 插件 → 从本地目录安装**，
+指向 `packages/conversation-import`（同一机制此前装过 `D:\ruanjian\eac-design-world`，见 `.plugin-manager` 的 receipt）。
+
+已经用临时 profile 证明过同一条安装路径可用（第 3、5 节），差别只是谁来写 profile。
+
+## 8. 已知未验收项
 
 - **GUI 内视觉验收未做过**：本记录只证明"装得上、配置里出现、host 半能加载"。设置页里长什么样需要在重启后的 DSH 里点一次。
 - **client 半在浏览器里的运行**只做了静态校验（模块加载器协议、require 清单、无 fork slot），没有跑真实浏览器会话。
