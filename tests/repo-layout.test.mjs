@@ -32,7 +32,12 @@ test('the four plugin packages live under packages/', async () => {
 })
 
 test('the fork export is archived under legacy/ and not installable', async () => {
-  assert.ok(await exists(join(root, 'legacy', 'payload', 'conversation-import')), 'legacy payload missing')
-  assert.ok(await exists(join(root, 'legacy', 'payload', 'shared', 'settings-and-ui-slots.patch')))
+  // Empty directories are not tracked by git, so assert on the archived files themselves.
+  assert.ok(await exists(join(root, 'legacy', 'manifest.json')), 'legacy manifest missing')
+  assert.ok(await exists(join(root, 'legacy', 'INSTALL.md')), 'legacy INSTALL.md missing')
+  assert.ok(
+    await exists(join(root, 'legacy', 'payload', 'shared', 'settings-and-ui-slots.patch')),
+    'legacy core patches missing',
+  )
   assert.equal(await exists(join(root, 'payload')), false, 'payload/ must be moved, not copied')
 })

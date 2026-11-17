@@ -39,8 +39,10 @@ for (const name of SHIPPED) {
 
       for (const entry of manifest.files) {
         if (!entry.endsWith('.js')) continue
-        const shipped = readFileSync(join(packageDir, entry), 'utf8')
-        const fromTarball = readFileSync(join(packed, entry), 'utf8')
+        // Line endings are normalised: the working tree may be CRLF on Windows while
+        // CI checks out LF, and that difference must not look like a stale artifact.
+        const shipped = readFileSync(join(packageDir, entry), 'utf8').replace(/\r\n/g, '\n')
+        const fromTarball = readFileSync(join(packed, entry), 'utf8').replace(/\r\n/g, '\n')
         assert.equal(
           fromTarball,
           shipped,
